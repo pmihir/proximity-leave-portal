@@ -14,7 +14,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1>Proximity Leave Portal</h1>
+        <h1>Proximity Leave Application</h1>
         <div className={styles.wrapper}>
         <form>
             <div className={styles.formInput}>
