@@ -15,6 +15,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/client";
+import { Notify } from "../services/notification-manager";
 
 const DEPARTMENTS = [
   {
@@ -62,6 +63,15 @@ export default function ApplyLeave() {
       router.replace("/");
     }
   }, [session, router]);
+  const [notificationStatus, setNotificationStatus] = useState({
+    slack: false,
+    timely: false,
+    email: false,
+  });
+  //info will come from session
+  const userName = "Akash Agarwal";
+  const userEmail = "akash.a@proximity.tech";
+  const timelyBearerToken = "KSgcHhS8yFGw33GRvm1LEHVG3G4ywvHzB5kOBB8NZ6g"; // we will get this from login page
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -73,6 +83,20 @@ export default function ApplyLeave() {
       reason: formData.reason.val,
     };
     console.log(data);
+
+    Notify(
+      userName,
+      userEmail,
+      data.fromDate,
+      data.toDate,
+      data.department,
+      data.reason,
+      timelyBearerToken
+    ).then((res) => {
+      debugger;
+      console.log(res);
+      setNotificationStatus({ ...res });
+    });
   };
 
   const onFormChangeHandler = (e) => {

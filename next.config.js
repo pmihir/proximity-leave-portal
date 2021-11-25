@@ -9,5 +9,8 @@ module.exports = {
     app: {
       callbackUri: "https://localhost:3000/",
     },
+    slack: {
+      channel: "testing-slack-post",
+    },
   },
 };

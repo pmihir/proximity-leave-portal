@@ -67,13 +67,13 @@ function formatMail(
   reasonForLeave
 ) {
   return `Hi Team,
-  I will be taking off. Please find the details below,\n
-  Name: ${userName}
-  Email: ${userEmail}
-  Leave From: ${formatDate(leaveFromDate)}
-  Leave To: ${formatDate(leaveToDate)}
-  Reason: ${reasonForLeave}\n\n
-  Thanks a lot !!!`;
+I will be taking off. Please find the details below,\n
+Name: ${userName}
+Email: ${userEmail}
+Leave From: ${formatDate(leaveFromDate)}
+Leave To: ${formatDate(leaveToDate)}
+Reason: ${reasonForLeave}\n\n
+Thanks a lot !!!`;
 }
 
 function formatEmailToList(emailToList) {
