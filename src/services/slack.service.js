@@ -9,8 +9,8 @@ const formatMessage = (leaveFromDate, leaveToDate, reasonForLeave) => {
     Thanks !!!`;
 };
 
-export const SendMessage = (
-  channelName = "#testing-slack-post",
+export const Notify = async (
+  channelName,
   userName,
   leaveFromDate,
   leaveToDate,

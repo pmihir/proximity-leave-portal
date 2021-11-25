@@ -1,6 +1,5 @@
 import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
+import styles from "./applyLeave.module.css";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import DateRangePicker from "@mui/lab/DateRangePicker";
@@ -13,9 +12,10 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Card from "@mui/material/Card";
-import moment from 'moment';
-import { formatDate } from "../utils/utility";
+import moment from "moment";
+import { formatDate } from "../../utils/utility";
 import { style } from "@mui/system";
+import NotificationManager from "../../services/notification-manager";
 
 const DEPARTMENTS = [
   {
@@ -55,12 +55,32 @@ export default function ApplyLeave() {
       error: "",
     },
   });
+  //info will come from session
+  const userName = "";
+  const userEmail = "";
 
   const submitHandler = (e) => {
     e.preventDefault();
     // let date = formData.fromDate.val;
     // date = moment(date).format('MMMM Do YY');
     // console.log(date);
+    let formattedFromDate = formatDate(formData.fromDate.val);
+    let formattedToDate = formatDate(formData.toDate.val);
+    // formattedFromDate = moment(formattedFromDate);
+    // formattedToDate = moment(formattedToDate);
+    // const diff = formattedToDate.diff(formattedFromDate, 'days');
+    // console.log(diff, 'days');
+    if (formattedToDate < formattedFromDate) {
+      setFormData({
+        ...formData,
+        fromDate: {
+          val: formData.fromDate.val,
+          err: "From Date should be less than or equal to To Date",
+        },
+      });
+      return;
+    }
+
     const data = {
       name: formData.name.val,
       department: formData.department.val,
@@ -68,6 +88,7 @@ export default function ApplyLeave() {
       toDate: formatDate(formData.toDate.val),
       reason: formData.reason.val,
     };
+
     console.log(data);
     setFormData({
       ...formData,
@@ -77,6 +98,18 @@ export default function ApplyLeave() {
       toDate: { val: null, err: "" },
       reason: { val: "", err: "" },
     });
+
+    // NotificationManager.Notify(
+    //   userName,
+    //   userEmail,
+    //   data.fromDate,
+    //   data.toDate,
+    //   data.department,
+    //   data.reason,
+    //   "timelyauthcode"
+    // ).then((response) => {
+    //   console.log(response);
+    // });
   };
 
   const onFormChangeHandler = (e) => {
@@ -102,7 +135,7 @@ export default function ApplyLeave() {
       </Head>
       <main className={styles.main}>
         <h1 className={styles.heading}>Proximity Works Leave Application</h1>
-        <Card variant="outlined">
+        <Card variant="outlined" sx={{ width: "45rem", height: "34rem" }}>
           <div className={styles.wrapper}>
             <form className={styles.form} onSubmit={submitHandler}>
               <div className={styles.formInput}>
@@ -131,7 +164,7 @@ export default function ApplyLeave() {
                     required
                     name="department"
                     sx={{
-                      'div.MuiFormControl-root': {
+                      "div.MuiFormControl-root": {
                         margin: 0,
                       },
                     }}
@@ -146,16 +179,27 @@ export default function ApplyLeave() {
               </div>
               <div className={styles.formDates}>
                 <div className={styles.formInput}>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DatePicker
-                      label="From Date"
-                      value={formData.fromDate.val}
-                      onChange={(e) => fromDateChangeHandler(e)}
-                      name="fromDate"
-                      required
-                      renderInput={(params) => <TextField {...params} />}
-                    />
-                  </LocalizationProvider>
+                  <div>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <DatePicker
+                        label="From Date"
+                        value={formData.fromDate.val}
+                        onChange={(e) => fromDateChangeHandler(e)}
+                        name="fromDate"
+                        error={true}
+                        helperText={"Requireed"}
+                        required
+                        renderInput={(params) => <TextField {...params} />}
+                      />
+                    </LocalizationProvider>
+                  </div>
+                  <div className={styles.fromDateError}>
+                    {formData.fromDate.err && (
+                      <div>
+                        {formData.fromDate.err}
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div className={styles.formInput}>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -186,7 +230,8 @@ export default function ApplyLeave() {
                 <Button
                   variant="contained"
                   type="submit"
-                  style={{ backgroundColor: "black" }}
+                  style={{ backgroundColor: "black" ,width: '15rem',
+                  padding: '1rem 0'}}
                 >
                   Send Request
                 </Button>

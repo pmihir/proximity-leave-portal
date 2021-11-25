@@ -109,46 +109,6 @@
 }
 
 
-/*=============================================
-=            Custom Styles            =
-=============================================*/
-
-.wrapper {
-  display: flex;
-  align-items: center;
-  padding: 3rem;
-  background-color: white;
-}
-
-.formInput {
-  display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    /* row-gap: 1rem; */
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  row-gap: 1.5rem;
-}
-
-.formDates {
-  display: flex;
-  justify-content: space-between;
-  column-gap: 3rem;
-}
-
-.heading {
-  color: white;
-  letter-spacing: 0.1rem;
-}
-
-.btnWrapper {
-  display: flex;
-  justify-content: center;
-}
 
  
 
