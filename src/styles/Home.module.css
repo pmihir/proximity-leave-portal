@@ -2,6 +2,11 @@
   padding: 0 2rem;
 }
 
+.header {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .main {
   min-height: 100vh;
   padding: 4rem 0;
@@ -108,7 +113,6 @@
   margin-left: 0.5rem;
 }
 
-
 /*=============================================
 =            Custom Styles            =
 =============================================*/
@@ -123,9 +127,9 @@
 
 .formInput {
   display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    /* row-gap: 1rem; */
+  flex-direction: column;
+  flex-grow: 1;
+  /* row-gap: 1rem; */
 }
 
 .form {

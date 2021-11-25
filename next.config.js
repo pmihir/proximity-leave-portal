@@ -2,9 +2,12 @@ module.exports = {
   reactStrictMode: true,
   env: {
     timely: {
-      redirectUri: "https://localhost:3000/leave",
-      applicationId: "xdvni2iFigPOTUqPgHBufstm5HYY26qFaFbGfHeu0To",
-      clientSecret: "c3x738-fwYPyQYJF8CCZpi2_9cB2EcIXOLpSb8xWrl0",
+      redirectUri: "https://localhost:3000/",
+      applicationId: "QjxE7NN2ZLOhZ0LabUj513b5FIQ-ZRXqlRokq1KcdIk",
+      clientSecret: "eyQcPCLrikEJSAQgt3qodh9oSw0mM--5HZh2FJ5FUo4",
+    },
+    app: {
+      callbackUri: "https://localhost:3000/",
     },
   },
 };
