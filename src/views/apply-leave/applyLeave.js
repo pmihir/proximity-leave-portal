@@ -82,6 +82,7 @@ export default function ApplyLeave() {
     email: false,
   });
   const submitHandler = (e) => {
+    e.preventDefault();
     const userEmail = sessionRef.current.user.email
       ? sessionRef.current.user.email
       : (function () {
@@ -248,6 +249,7 @@ export default function ApplyLeave() {
                 <div className={styles.btnWrapper}>
                   <Button
                     variant="contained"
+                    type="submit"
                     style={{
                       backgroundColor: "black",
                       width: "15rem",
