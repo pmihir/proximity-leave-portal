@@ -114,11 +114,10 @@
 =============================================*/
 
 .wrapper {
-  width: 50%;
   display: flex;
   align-items: center;
-  border: 1px solid black;
   padding: 3rem;
+  background-color: white;
 }
 
 .formInput {
@@ -140,6 +139,18 @@
   justify-content: space-between;
   column-gap: 3rem;
 }
+
+.heading {
+  color: white;
+  letter-spacing: 0.1rem;
+}
+
+.btnWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+ 
 
 @media (max-width: 600px) {
   .grid {

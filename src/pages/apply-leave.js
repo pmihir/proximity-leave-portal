@@ -12,6 +12,10 @@ import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import Card from "@mui/material/Card";
+import moment from 'moment';
+import { formatDate } from "../utils/utility";
+import { style } from "@mui/system";
 
 const DEPARTMENTS = [
   {
@@ -54,18 +58,30 @@ export default function ApplyLeave() {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    // let date = formData.fromDate.val;
+    // date = moment(date).format('MMMM Do YY');
+    // console.log(date);
     const data = {
       name: formData.name.val,
       department: formData.department.val,
-      fromDate: formData.fromDate.val,
-      toDate: formData.toDate.val,
+      fromDate: formatDate(formData.fromDate.val),
+      toDate: formatDate(formData.toDate.val),
       reason: formData.reason.val,
     };
     console.log(data);
+    setFormData({
+      ...formData,
+      name: { val: "", err: "" },
+      department: { val: "", err: "" },
+      fromDate: { val: null, err: "" },
+      toDate: { val: null, err: "" },
+      reason: { val: "", err: "" },
+    });
   };
 
   const onFormChangeHandler = (e) => {
     const { name, value } = e.target;
+    console.log(e);
     setFormData({ ...formData, [name]: { val: value, err: "" } });
   };
 
@@ -85,88 +101,99 @@ export default function ApplyLeave() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <h1>Proximity Works Leave Application</h1>
-        <div className={styles.wrapper}>
-          <form className={styles.form} onSubmit={submitHandler}>
-            <div className={styles.formInput}>
-              <TextField
-                id="standard-basic"
-                label="Name"
-                name="name"
-                required
-                variant="standard"
-                value={formData.name.val}
-                onChange={(e) => onFormChangeHandler(e)}
-              />
-            </div>
-            <div className={styles.formInput}>
-              <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel id="demo-simple-select-standard-label" required>
-                  Department
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-standard-label"
-                  id="demo-simple-select-standard"
-                  value={formData.department.val}
-                  onChange={(e) => onFormChangeHandler(e)}
-                  label="Department"
+        <h1 className={styles.heading}>Proximity Works Leave Application</h1>
+        <Card variant="outlined">
+          <div className={styles.wrapper}>
+            <form className={styles.form} onSubmit={submitHandler}>
+              <div className={styles.formInput}>
+                <TextField
+                  id="standard-basic"
+                  label="Name"
+                  name="name"
                   required
-                  name="department"
+                  variant="standard"
+                  value={formData.name.val}
+                  onChange={(e) => onFormChangeHandler(e)}
+                  helperText={formData.name.err ? formData.name.err : ""}
+                />
+              </div>
+              <div className={styles.formInput}>
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                  <InputLabel id="demo-simple-select-standard-label" required>
+                    Department
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    value={formData.department.val}
+                    onChange={(e) => onFormChangeHandler(e)}
+                    label="Department"
+                    required
+                    name="department"
+                    sx={{
+                      'div.MuiFormControl-root': {
+                        margin: 0,
+                      },
+                    }}
+                  >
+                    {DEPARTMENTS.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </div>
+              <div className={styles.formDates}>
+                <div className={styles.formInput}>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DatePicker
+                      label="From Date"
+                      value={formData.fromDate.val}
+                      onChange={(e) => fromDateChangeHandler(e)}
+                      name="fromDate"
+                      required
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                  </LocalizationProvider>
+                </div>
+                <div className={styles.formInput}>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DatePicker
+                      label="To Date"
+                      value={formData.toDate.val}
+                      onChange={(e) => toDateChangeHandler(e)}
+                      name="toDate"
+                      required
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                  </LocalizationProvider>
+                </div>
+              </div>
+              <div className={styles.formInput}>
+                <TextField
+                  id="outlined-multiline-static"
+                  label="Reason"
+                  name="reason"
+                  multiline
+                  rows={4}
+                  value={formData.reason.val}
+                  onChange={(e) => onFormChangeHandler(e)}
+                  required
+                />
+              </div>
+              <div className={styles.btnWrapper}>
+                <Button
+                  variant="contained"
+                  type="submit"
+                  style={{ backgroundColor: "black" }}
                 >
-                  {DEPARTMENTS.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </div>
-            <div className={styles.formDates}>
-              <div className={styles.formInput}>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DatePicker
-                    label="From Date"
-                    value={formData.fromDate.val}
-                    onChange={(e) => fromDateChangeHandler(e)}
-                    name="fromDate"
-                    required
-                    renderInput={(params) => <TextField {...params} />}
-                  />
-                </LocalizationProvider>
+                  Send Request
+                </Button>
               </div>
-              <div className={styles.formInput}>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DatePicker
-                    label="To Date"
-                    value={formData.toDate.val}
-                    onChange={(e) => toDateChangeHandler(e)}
-                    name="toDate"
-                    required
-                    renderInput={(params) => <TextField {...params} />}
-                  />
-                </LocalizationProvider>
-              </div>
-            </div>
-            <div className={styles.formInput}>
-              <TextField
-                id="standard-textarea"
-                label="Reason"
-                placeholder="Ex. Fever, Personal Work"
-                multiline
-                variant="standard"
-                value={formData.reason.val}
-                required
-                name="reason"
-                onChange={(e) => onFormChangeHandler(e)}
-              />
-            </div>
-            <div>
-              <Button variant="contained" type="submit">
-                Send Request
-              </Button>
-            </div>
-          </form>
-        </div>
+            </form>
+          </div>
+        </Card>
       </main>
     </div>
   );
