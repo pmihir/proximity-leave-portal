@@ -1,12 +1,6 @@
 import axios from "axios";
 import { ServiceResponseModel } from "../utils/Models";
 
-const redirectUri = process.env.timely.redirectUri;
-const application_id = process.env.timely.applicationId;
-const client_secret = process.env.timely.clientSecret;
-
-//if this fails then from its parent we will again send request to timely to get fresh auth token and then reinitiate this method.
-// dates should be an array of only dates in yyyy-mm-dd format, eg.  ['2021-11-12', '2021-11-13', '2021-11-14']
 export const NotifyTimely = async (
   bearerToken,
   userEmail,
@@ -58,27 +52,6 @@ const InitializeEventCreation = async (
 
   return true;
 };
-
-// const GetAccessToken = async (authCode) => {
-//   const authUrl = "https://api.timelyapp.com/1.1/oauth/token";
-//   const bodyFormData = new FormData();
-//   bodyFormData.append("client_id", application_id);
-//   bodyFormData.append("client_secret", client_secret);
-//   bodyFormData.append("redirect_uri", redirectUri);
-//   bodyFormData.append("code", authCode);
-//   bodyFormData.append("grant_type", "authorization_code");
-
-//   const response = await axios({
-//     method: "post",
-//     url: authUrl,
-//     data: bodyFormData,
-//     headers: { "Content-Type": "multipart/form-data" },
-//   });
-
-//   if (response && response.data && response.data.access_token) {
-//     return response.data.access_token;
-//   }
-// };
 
 const GetAccountId = async (requestConfig) => {
   const accountsUrl = "https://api.timelyapp.com/1.1/accounts";
