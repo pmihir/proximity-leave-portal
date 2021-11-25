@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import Head from "next/head";
-import { signIn, useSession } from "next-auth/client";
+import { signIn, getSession } from "next-auth/client";
 import { useRouter } from "next/router";
 import axios from "axios";
 
@@ -22,26 +22,26 @@ export default function Login() {
   //   const [googleLoader, setGoogleLoader] = useState(false);
   const [isGoogleCheckmarkActive, setIsGoogleCheckmarkActive] = useState(false);
   const [isTimelyCheckmarkActive, setIsTimelyCheckmarkActive] = useState(false);
-  const [session] = useSession();
   const router = useRouter();
-  console.log(session);
 
   useEffect(() => {
-    if (session) {
+    getSession().then((session) => {
       //To check if provided email is from proximity
-      if (
-        session.user.email
-          .match(/(?<=\@)\w+/gi)
-          .join("")
-          .toLowerCase() !== "proximity"
-      ) {
-        setError("Please provide valid email");
-      } else {
-        setIsGoogleCheckmarkActive(true);
-        setError("");
+      if (session) {
+        if (
+          session.user.email
+            .match(/(?<=\@)\w+/gi)
+            .join("")
+            .toLowerCase() !== "proximity"
+        ) {
+          setError("Please login via Proximity email id");
+        } else {
+          setIsGoogleCheckmarkActive(true);
+          setError("");
+        }
       }
-    }
-  }, [session]);
+    });
+  }, []);
 
   useEffect(() => {
     const urlSearchParams = new URLSearchParams(window.location.search);

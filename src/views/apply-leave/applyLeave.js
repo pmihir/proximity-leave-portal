@@ -12,7 +12,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Card from "@mui/material/Card";
 import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/client";
+import { signOut, getSession } from "next-auth/client";
 import { Notify } from "../../services/notification-manager";
 
 const DEPARTMENTS = [
@@ -54,26 +54,26 @@ export default function ApplyLeave() {
     },
   });
   const [userName, setUserName] = useState("");
-  const [session] = useSession();
   const router = useRouter();
   const tokenRef = useRef(null);
-
-  useEffect(() => {
-    if (session === null) {
-      router.replace("/");
-    }
-  }, [session, router]);
+  const sessionRef = useRef();
 
   useEffect(() => {
     tokenRef.current = JSON.parse(window.localStorage.getItem("timelyToken"));
-    if (session) {
-      const user = session.user
-        ? session.user.name
-        : (function () {
-            throw new Error("user not authenticated");
-          })();
-      setUserName(user);
-    }
+
+    getSession().then((session) => {
+      if (!session) {
+        router.replace("/");
+      } else {
+        sessionRef.current = session;
+        const user = session.user
+          ? session.user.name
+          : (function () {
+              throw new Error("user not authenticated");
+            })();
+        setUserName(user);
+      }
+    });
   }, []);
 
   const [notificationStatus, setNotificationStatus] = useState({
@@ -82,10 +82,8 @@ export default function ApplyLeave() {
     email: false,
   });
   const submitHandler = (e) => {
-    e.preventDefault();
-
-    const userEmail = session.user.email
-      ? session.user.email
+    const userEmail = sessionRef.current.user.email
+      ? sessionRef.current.user.email
       : (function () {
           throw new Error("user not authenticated");
         })();
@@ -123,15 +121,6 @@ export default function ApplyLeave() {
       console.log(res);
       setNotificationStatus({ ...res });
     });
-
-    // setFormData({
-    //   ...formData,
-    //   name: { val: "", err: "" },
-    //   department: { val: "", err: "" },
-    //   fromDate: { val: null, err: "" },
-    //   toDate: { val: null, err: "" },
-    //   reason: { val: "", err: "" },
-    // });
   };
 
   const onFormChangeHandler = (e) => {
@@ -259,7 +248,6 @@ export default function ApplyLeave() {
                 <div className={styles.btnWrapper}>
                   <Button
                     variant="contained"
-                    type="submit"
                     style={{
                       backgroundColor: "black",
                       width: "15rem",
