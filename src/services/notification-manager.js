@@ -1,22 +1,28 @@
-import SlackService from "./slack.service.js";
-import TimelyService from "./timely.service.js";
-import EmailService from "./email.service.js";
-import { GetDatesList, FormatDateYYYYMMDD } from "../utils/dates-util";
+import { NotifySlack } from "./slack.service.js";
+import { NotifyTimely } from "./timely.service.js";
+import { NotifyEmail } from "./email.service.js";
+import {
+  GetDatesList,
+  FormatDateYYYYMMDD,
+  ConvertDatesToStringArr,
+} from "../utils/dates-util";
 
-export const Notify = async ({
+export const Notify = async (
   userName,
   userEmail,
   leaveFromDate,
   leaveToDate,
   department,
   reasonForLeave,
-  timelyAuthCode,
-}) => {
+  timelyBearerToken
+) => {
+  console.log(timelyBearerToken);
   const slackChannel = "#" + process.env.slack.channel ?? "testing-slack-post";
   const response = { slack: false, timely: false, email: false };
 
   try {
-    await SlackService.Notify(
+    //slack update
+    await NotifySlack(
       slackChannel,
       userName,
       leaveFromDate,
@@ -24,25 +30,23 @@ export const Notify = async ({
       reasonForLeave
     );
     response.slack = true;
-  } catch (err) {
-    response.slack = false;
-  }
+  } catch (err) {}
 
   try {
+    //timely update
     const leaveDates = GetDatesList(leaveFromDate, leaveToDate);
-    await TimelyService.Notify(
-      timelyAuthCode,
+    await NotifyTimely(
+      timelyBearerToken,
       userEmail,
       ConvertDatesToStringArr(leaveDates),
       reasonForLeave
     );
     response.timely = true;
-  } catch (err) {
-    response.timely = false;
-  }
+  } catch (err) {}
 
   try {
-    await EmailService.Notify(
+    //send email
+    await NotifyEmail(
       department,
       userEmail,
       userName,
@@ -51,9 +55,7 @@ export const Notify = async ({
       reasonForLeave
     );
     response.email = true;
-  } catch {
-    response.email = false;
-  }
+  } catch (err) {}
 
   return response;
 };

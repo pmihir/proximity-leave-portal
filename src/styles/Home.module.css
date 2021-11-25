@@ -2,6 +2,11 @@
   padding: 0 2rem;
 }
 
+.header {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .main {
   min-height: 100vh;
   padding: 4rem 0;
@@ -107,10 +112,6 @@
   height: 1em;
   margin-left: 0.5rem;
 }
-
-
-
- 
 
 @media (max-width: 600px) {
   .grid {

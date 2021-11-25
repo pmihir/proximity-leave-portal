@@ -17,13 +17,13 @@ export default NextAuth({
   jwt: {
     secret: process.env.SECRET,
     encryption: true,
-    signingKey: process.env.SIGNING_KEY,
-    encryptionKey: process.env.ENCRYPTION_KEY,
+    signingKey: process.env.signingKey,
+    encryptionKey: process.env.encryptionKey,
   },
   providers: [
     Providers.Google({
-      clientId: process.env.GOOGLE_ID,
-      clientSecret: process.env.GOOGLE_SECRET,
+      clientId: process.env.googleId,
+      clientSecret: process.env.googleSecret,
     }),
   ],
 });

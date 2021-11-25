@@ -1,7 +1,7 @@
 import axios from "axios";
 import userEmails from "../data/userEmails.json";
 
-export const Notify = async (
+export const NotifyEmail = async (
   department,
   userEmail,
   userName,
@@ -19,12 +19,15 @@ export const Notify = async (
     leaveToDate,
     reasonForLeave,
   };
-  await axios.post({
-    method: "post",
-    url: "/api/email",
-    data: JSON.stringify(data),
+  await axios.post("/api/email", JSON.stringify(data), {
     headers: { "Content-Type": "application/json" },
   });
+  // await axios.post({
+  //   method: "post",
+  //   url: "/api/email",
+  //   data: JSON.stringify(data),
+  //   headers: { "Content-Type": "application/json" },
+  // });
 };
 
 const GetEmailList = (department) => {
@@ -50,8 +53,8 @@ const GetEmailList = (department) => {
 
   //TODO: overriding email list for testing purpose
   emailList = [
-    "akash.a@proximity.tech",
-    "mihir.p@proximity.tech",
+    // "akash.a@proximity.tech",
+    // "mihir.p@proximity.tech",
     "ashwath.a@proximity.tech",
   ];
 

@@ -7,22 +7,22 @@ const client_secret = process.env.timely.clientSecret;
 
 //if this fails then from its parent we will again send request to timely to get fresh auth token and then reinitiate this method.
 // dates should be an array of only dates in yyyy-mm-dd format, eg.  ['2021-11-12', '2021-11-13', '2021-11-14']
-export const Notify = async (
-  authCode,
+export const NotifyTimely = async (
+  bearerToken,
   userEmail,
   dates,
   reasonForLeave,
   hoursPerDay = 8
 ) => {
   const responseModel = new ServiceResponseModel(true);
-  if (!authCode) {
+  if (!bearerToken) {
     responseModel.success = false;
-    responseModel.error = "No auth code provided";
+    responseModel.error = "No bearer token provided";
     return responseModel;
   }
 
   await InitializeEventCreation(
-    authCode,
+    bearerToken,
     userEmail,
     dates,
     reasonForLeave,
@@ -31,15 +31,16 @@ export const Notify = async (
 };
 
 const InitializeEventCreation = async (
-  authCode,
+  bearerToken,
   userEmail,
   dates,
   reasonForLeave,
   hoursPerDay
 ) => {
-  const accessToken = await GetAccessToken(authCode);
+  //const accessToken = await GetAccessToken(authCode);
+
   const requestConfig = {
-    headers: { Authorization: `Bearer ${accessToken}` },
+    headers: { Authorization: `Bearer ${bearerToken}` },
   };
 
   const accountId = await GetAccountId(requestConfig);
@@ -58,26 +59,26 @@ const InitializeEventCreation = async (
   return true;
 };
 
-const GetAccessToken = async (authCode) => {
-  const authUrl = "https://api.timelyapp.com/1.1/oauth/token";
-  const bodyFormData = new FormData();
-  bodyFormData.append("client_id", application_id);
-  bodyFormData.append("client_secret", client_secret);
-  bodyFormData.append("redirect_uri", redirectUri);
-  bodyFormData.append("code", authCode);
-  bodyFormData.append("grant_type", "authorization_code");
+// const GetAccessToken = async (authCode) => {
+//   const authUrl = "https://api.timelyapp.com/1.1/oauth/token";
+//   const bodyFormData = new FormData();
+//   bodyFormData.append("client_id", application_id);
+//   bodyFormData.append("client_secret", client_secret);
+//   bodyFormData.append("redirect_uri", redirectUri);
+//   bodyFormData.append("code", authCode);
+//   bodyFormData.append("grant_type", "authorization_code");
 
-  const response = await axios({
-    method: "post",
-    url: authUrl,
-    data: bodyFormData,
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+//   const response = await axios({
+//     method: "post",
+//     url: authUrl,
+//     data: bodyFormData,
+//     headers: { "Content-Type": "multipart/form-data" },
+//   });
 
-  if (response && response.data && response.data.access_token) {
-    return response.data.access_token;
-  }
-};
+//   if (response && response.data && response.data.access_token) {
+//     return response.data.access_token;
+//   }
+// };
 
 const GetAccountId = async (requestConfig) => {
   const accountsUrl = "https://api.timelyapp.com/1.1/accounts";
@@ -119,8 +120,8 @@ const CreateTimelyPTOEvent = async (
   projectId,
   userId,
   dates,
-  hoursPerDay,
   reasonForLeave,
+  hoursPerDay,
   requestConfig
 ) => {
   const eventsUrl = `https://api.timelyapp.com/1.1/${accountId}/projects/${projectId}/events`;
@@ -138,6 +139,7 @@ const CreateTimelyPTOEvent = async (
       },
     };
 
+    requestConfig.headers["Content-Type"] = "application/json";
     await axios.post(eventsUrl, JSON.stringify(data), requestConfig);
   }
 };
