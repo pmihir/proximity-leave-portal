@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const webhookUrl =
-  "https://hooks.slack.com/services/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";
+  "https://hooks.slack.com/services/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";
 
 const formatMessage = (leaveFromDate, leaveToDate, reasonForLeave) => {
   return `Hi Guys, I will be taking leave from ${leaveFromDate} to ${leaveToDate}\n
@@ -9,7 +9,7 @@ const formatMessage = (leaveFromDate, leaveToDate, reasonForLeave) => {
     Thanks !!!`;
 };
 
-export const Notify = async (
+export const NotifySlack = async (
   channelName,
   userName,
   leaveFromDate,

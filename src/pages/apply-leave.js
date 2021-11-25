@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import NotificationManager from "../services/notification-manager";
+import { Notify } from "../services/notification-manager";
 
 const DEPARTMENTS = [
   {
@@ -52,9 +52,15 @@ export default function ApplyLeave() {
       error: "",
     },
   });
+  const [notificationStatus, setNotificationStatus] = useState({
+    slack: false,
+    timely: false,
+    email: false,
+  });
   //info will come from session
-  const userName = "";
-  const userEmail = "";
+  const userName = "Akash Agarwal";
+  const userEmail = "akash.a@proximity.tech";
+  const timelyBearerToken = "KSgcHhS8yFGw33GRvm1LEHVG3G4ywvHzB5kOBB8NZ6g"; // we will get this from login page
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -67,17 +73,17 @@ export default function ApplyLeave() {
     };
     console.log(data);
 
-    // NotificationManager.Notify(
-    //   userName,
-    //   userEmail,
-    //   data.fromDate,
-    //   data.toDate,
-    //   data.department,
-    //   data.reason,
-    //   "timelyauthcode"
-    // ).then((response) => {
-    //   console.log(response);
-    // });
+    const notifyStat = Notify(
+      userName,
+      userEmail,
+      data.fromDate,
+      data.toDate,
+      data.department,
+      data.reason,
+      timelyBearerToken
+    );
+    console.log(notifyStat);
+    setNotificationStatus({ ...notifyStat });
   };
 
   const onFormChangeHandler = (e) => {

@@ -3,7 +3,7 @@ export const GetDatesList = (fromDate, toDate) => {
   var currentDate = fromDate;
   while (currentDate <= toDate) {
     dateArray.push(new Date(currentDate));
-    currentDate = currentDate.addDays(1);
+    currentDate.setDate(currentDate.getDate() + 1);
   }
   return dateArray;
 };
@@ -13,5 +13,5 @@ export const ConvertDatesToStringArr = (datesList) => {
 };
 
 export const FormatDateYYYYMMDD = (date) => {
-  return date.toIsoString().split("T")[0];
+  return date.toISOString().split("T")[0];
 };
