@@ -7,7 +7,7 @@ const client_secret = process.env.timely.clientSecret;
 
 //if this fails then from its parent we will again send request to timely to get fresh auth token and then reinitiate this method.
 // dates should be an array of only dates in yyyy-mm-dd format, eg.  ['2021-11-12', '2021-11-13', '2021-11-14']
-export const UpdateTimely = (
+export const Notify = async (
   authCode,
   userEmail,
   dates,
@@ -21,7 +21,7 @@ export const UpdateTimely = (
     return responseModel;
   }
 
-  InitializeEventCreation(
+  await InitializeEventCreation(
     authCode,
     userEmail,
     dates,
@@ -30,7 +30,7 @@ export const UpdateTimely = (
   );
 };
 
-const InitializeEventCreation = (
+const InitializeEventCreation = async (
   authCode,
   userEmail,
   dates,

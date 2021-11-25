@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import NotificationManager from "../services/notification-manager";
 
 const DEPARTMENTS = [
   {
@@ -51,6 +52,9 @@ export default function ApplyLeave() {
       error: "",
     },
   });
+  //info will come from session
+  const userName = "";
+  const userEmail = "";
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -62,6 +66,18 @@ export default function ApplyLeave() {
       reason: formData.reason.val,
     };
     console.log(data);
+
+    // NotificationManager.Notify(
+    //   userName,
+    //   userEmail,
+    //   data.fromDate,
+    //   data.toDate,
+    //   data.department,
+    //   data.reason,
+    //   "timelyauthcode"
+    // ).then((response) => {
+    //   console.log(response);
+    // });
   };
 
   const onFormChangeHandler = (e) => {
