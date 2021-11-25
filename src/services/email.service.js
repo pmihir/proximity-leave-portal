@@ -1,7 +1,7 @@
 import axios from "axios";
 import userEmails from "../data/userEmails.json";
 
-export const Notify = async (
+export const NotifyEmail = async (
   department,
   userEmail,
   userName,
@@ -19,6 +19,7 @@ export const Notify = async (
     leaveToDate,
     reasonForLeave,
   };
+  await axios.post;
   await axios.post({
     method: "post",
     url: "/api/email",
