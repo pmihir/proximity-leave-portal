@@ -6,6 +6,12 @@
   justify-content: center;
 }
 
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 .container {
   max-width: 425px;
   width: 425px;
@@ -21,8 +27,20 @@
 
 .imageContainer {
   display: inline-flex;
+  margin-bottom: 25px;
+  align-items: center;
 }
 
 .buttonName {
   margin-left: 10px;
+}
+
+.button {
+  max-width: 250px;
+  width: 250px;
+  margin-right: 5px;
+}
+
+.error {
+  color: rgb(211, 108, 108);
 }
