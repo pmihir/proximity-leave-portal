@@ -12,7 +12,7 @@ module.exports = {
     slack: {
       channel: "testing-slack-post",
       webhookUrl:
-        "https://hooks.slack.com/services/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",
+        "https://hooks.slack.com/services/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",
     },
   },
 };
