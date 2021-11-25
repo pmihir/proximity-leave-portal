@@ -113,38 +113,6 @@
   margin-left: 0.5rem;
 }
 
-/*=============================================
-=            Custom Styles            =
-=============================================*/
-
-.wrapper {
-  width: 50%;
-  display: flex;
-  align-items: center;
-  border: 1px solid black;
-  padding: 3rem;
-}
-
-.formInput {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  /* row-gap: 1rem; */
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  row-gap: 1.5rem;
-}
-
-.formDates {
-  display: flex;
-  justify-content: space-between;
-  column-gap: 3rem;
-}
-
 @media (max-width: 600px) {
   .grid {
     width: 100%;

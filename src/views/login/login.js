@@ -94,7 +94,7 @@ export default function Login() {
   };
 
   const onSignIn = () => {
-    router.push("/apply-leave");
+    router.push("/leave");
   };
 
   const continueDisabled = () => {
