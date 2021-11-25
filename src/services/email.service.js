@@ -19,7 +19,6 @@ export const NotifyEmail = async (
     leaveToDate,
     reasonForLeave,
   };
-  await axios.post;
   await axios.post({
     method: "post",
     url: "/api/email",

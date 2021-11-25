@@ -7,7 +7,7 @@ import {
   ConvertDatesToStringArr,
 } from "../utils/dates-util";
 
-export const Notify = (
+export const Notify = async (
   userName,
   userEmail,
   leaveFromDate,
@@ -19,39 +19,42 @@ export const Notify = (
   const slackChannel = "#" + process.env.slack.channel ?? "testing-slack-post";
   const response = { slack: false, timely: false, email: false };
 
-  //slack update
-  NotifySlack(
-    slackChannel,
-    userName,
-    leaveFromDate,
-    leaveToDate,
-    reasonForLeave
-  ).then((res) => {
+  try {
+    //slack update
+    await NotifySlack(
+      slackChannel,
+      userName,
+      leaveFromDate,
+      leaveToDate,
+      reasonForLeave
+    );
     response.slack = true;
-  });
+  } catch (err) {}
 
-  //timely update
-  const leaveDates = GetDatesList(leaveFromDate, leaveToDate);
-  NotifyTimely(
-    timelyBearerToken,
-    userEmail,
-    ConvertDatesToStringArr(leaveDates),
-    reasonForLeave
-  ).then((res) => {
+  try {
+    //timely update
+    const leaveDates = GetDatesList(leaveFromDate, leaveToDate);
+    await NotifyTimely(
+      timelyBearerToken,
+      userEmail,
+      ConvertDatesToStringArr(leaveDates),
+      reasonForLeave
+    );
     response.timely = true;
-  });
+  } catch (err) {}
 
-  //send email
-  NotifyEmail(
-    department,
-    userEmail,
-    userName,
-    FormatDateYYYYMMDD(leaveFromDate),
-    FormatDateYYYYMMDD(leaveToDate),
-    reasonForLeave
-  ).then((res) => {
+  try {
+    //send email
+    await NotifyEmail(
+      department,
+      userEmail,
+      userName,
+      FormatDateYYYYMMDD(leaveFromDate),
+      FormatDateYYYYMMDD(leaveToDate),
+      reasonForLeave
+    );
     response.email = true;
-  });
+  } catch (err) {}
 
   return response;
 };

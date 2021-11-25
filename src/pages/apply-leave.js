@@ -73,7 +73,7 @@ export default function ApplyLeave() {
     };
     console.log(data);
 
-    const notifyStat = Notify(
+    Notify(
       userName,
       userEmail,
       data.fromDate,
@@ -81,9 +81,11 @@ export default function ApplyLeave() {
       data.department,
       data.reason,
       timelyBearerToken
-    );
-    console.log(notifyStat);
-    setNotificationStatus({ ...notifyStat });
+    ).then((res) => {
+      debugger;
+      console.log(res);
+      setNotificationStatus({ ...res });
+    });
   };
 
   const onFormChangeHandler = (e) => {
