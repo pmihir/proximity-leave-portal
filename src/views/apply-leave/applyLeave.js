@@ -12,7 +12,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Card from "@mui/material/Card";
 import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/client";
+import { signOut, getSession } from "next-auth/client";
 import { Notify } from "../../services/notification-manager";
 import LinearProgress from "@mui/material/LinearProgress";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -58,7 +58,6 @@ export default function ApplyLeave() {
     },
   });
   const [userName, setUserName] = useState("");
-  const [session] = useSession();
   const router = useRouter();
   const tokenRef = useRef(null);
   const [isApi, setIsApi] = useState(false);
@@ -68,22 +67,24 @@ export default function ApplyLeave() {
     timely: null,
   });
 
-  useEffect(() => {
-    if (session === null) {
-      router.replace("/");
-    }
-  }, [session, router]);
+  const sessionRef = useRef();
 
   useEffect(() => {
     tokenRef.current = JSON.parse(window.localStorage.getItem("timelyToken"));
-    if (session) {
-      const user = session.user
-        ? session.user.name
-        : (function () {
-            throw new Error("user not authenticated");
-          })();
-      setUserName(user);
-    }
+
+    getSession().then((session) => {
+      if (!session) {
+        router.replace("/");
+      } else {
+        sessionRef.current = session;
+        const user = session.user
+          ? session.user.name
+          : (function () {
+              throw new Error("user not authenticated");
+            })();
+        setUserName(user);
+      }
+    });
   }, []);
 
   const [notificationStatus, setNotificationStatus] = useState({
@@ -93,9 +94,8 @@ export default function ApplyLeave() {
   });
   const submitHandler = (e) => {
     e.preventDefault();
-
-    const userEmail = session.user.email
-      ? session.user.email
+    const userEmail = sessionRef.current.user.email
+      ? sessionRef.current.user.email
       : (function () {
           throw new Error("user not authenticated");
         })();
