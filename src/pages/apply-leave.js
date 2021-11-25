@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
@@ -57,24 +57,40 @@ export default function ApplyLeave() {
   });
   const [session] = useSession();
   const router = useRouter();
+  const tokenRef = useRef(null);
 
   useEffect(() => {
     if (session === null) {
       router.replace("/");
     }
   }, [session, router]);
+
+  useEffect(() => {
+    tokenRef.current = JSON.parse(window.localStorage.getItem("timelyToken"));
+  }, []);
+
   const [notificationStatus, setNotificationStatus] = useState({
     slack: false,
     timely: false,
     email: false,
   });
-  //info will come from session
-  const userName = "Akash Agarwal";
-  const userEmail = "akash.a@proximity.tech";
-  const timelyBearerToken = "KSgcHhS8yFGw33GRvm1LEHVG3G4ywvHzB5kOBB8NZ6g"; // we will get this from login page
 
   const submitHandler = (e) => {
     e.preventDefault();
+
+    //info will come from session// we will get this from login page
+
+    const userName = session.user.name
+      ? session.user.name
+      : (function () {
+          throw new Error("user not authenticated");
+        })();
+    const userEmail = session.user.email
+      ? session.user.email
+      : (function () {
+          throw new Error("user not authenticated");
+        })();
+
     const data = {
       name: formData.name.val,
       department: formData.department.val,
@@ -91,7 +107,7 @@ export default function ApplyLeave() {
       data.toDate,
       data.department,
       data.reason,
-      timelyBearerToken
+      tokenRef.current
     ).then((res) => {
       debugger;
       console.log(res);

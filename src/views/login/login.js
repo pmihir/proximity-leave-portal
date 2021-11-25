@@ -10,6 +10,7 @@ import Image from "next/image";
 import Head from "next/head";
 import { signIn, useSession } from "next-auth/client";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 import GoogleIcon from "../../public/google-icon.svg";
 import TimelyIcon from "../../public/timely-icon.svg";
@@ -49,7 +50,7 @@ export default function Login() {
     console.log(params);
     if (params.code) {
       setIsTimelyCheckmarkActive(true);
-      window.localStorage.setItem("timelyCode", JSON.stringify(params.code));
+      getAccessToken(params.code);
     }
   }, []);
 
@@ -65,6 +66,31 @@ export default function Login() {
     const authCodeUrl = `https://api.timelyapp.com/1.1/oauth/authorize?response_type=code&redirect_uri=${redirectUri}&client_id=${applicationId}`;
     //redirecting to timely to get auth code
     location.href = authCodeUrl;
+  };
+
+  const getAccessToken = async (authCode) => {
+    const { applicationId, clientSecret, redirectUri } = process.env.timely;
+    const authUrl = "https://api.timelyapp.com/1.1/oauth/token";
+    const bodyFormData = new FormData();
+    bodyFormData.append("client_id", applicationId);
+    bodyFormData.append("client_secret", clientSecret);
+    bodyFormData.append("redirect_uri", redirectUri);
+    bodyFormData.append("code", authCode);
+    bodyFormData.append("grant_type", "authorization_code");
+
+    const response = await axios({
+      method: "post",
+      url: authUrl,
+      data: bodyFormData,
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    if (response?.data?.access_token) {
+      window.localStorage.setItem(
+        "timelyToken",
+        JSON.stringify(response.data.access_token)
+      );
+    }
   };
 
   const onSignIn = () => {

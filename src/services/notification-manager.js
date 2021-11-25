@@ -16,6 +16,7 @@ export const Notify = async (
   reasonForLeave,
   timelyBearerToken
 ) => {
+  console.log(timelyBearerToken);
   const slackChannel = "#" + process.env.slack.channel ?? "testing-slack-post";
   const response = { slack: false, timely: false, email: false };
 

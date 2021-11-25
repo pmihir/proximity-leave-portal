@@ -53,8 +53,8 @@ const GetEmailList = (department) => {
 
   //TODO: overriding email list for testing purpose
   emailList = [
-    "akash.a@proximity.tech",
-    "mihir.p@proximity.tech",
+    // "akash.a@proximity.tech",
+    // "mihir.p@proximity.tech",
     "ashwath.a@proximity.tech",
   ];
 
