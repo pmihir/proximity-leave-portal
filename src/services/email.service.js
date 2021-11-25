@@ -19,12 +19,15 @@ export const NotifyEmail = async (
     leaveToDate,
     reasonForLeave,
   };
-  await axios.post({
-    method: "post",
-    url: "/api/email",
-    data: JSON.stringify(data),
+  await axios.post("/api/email", JSON.stringify(data), {
     headers: { "Content-Type": "application/json" },
   });
+  // await axios.post({
+  //   method: "post",
+  //   url: "/api/email",
+  //   data: JSON.stringify(data),
+  //   headers: { "Content-Type": "application/json" },
+  // });
 };
 
 const GetEmailList = (department) => {
