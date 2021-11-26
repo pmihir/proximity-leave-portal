@@ -9,7 +9,6 @@ export default function LoginPage({ session }) {
   React.useEffect(() => {
     const token = window.localStorage.getItem("timelyToken");
     if (token && session) {
-      debugger;
       router.push("/leave");
     }
   }, [session, router]);

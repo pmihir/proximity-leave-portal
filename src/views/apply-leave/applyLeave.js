@@ -102,6 +102,7 @@ export default function ApplyLeave({ session }) {
     email: false,
   });
   const submitHandler = (e) => {
+    e.preventDefault();
     const userEmail = session.user.email
       ? session.user.email
       : (function () {
