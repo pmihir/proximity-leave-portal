@@ -61,6 +61,7 @@ export default function ApplyLeave() {
   const router = useRouter();
   const tokenRef = useRef(null);
   const [isApi, setIsApi] = useState(false);
+  const [isBtnDisabled, setIsBtnDisabled] = useState(false);
   const [responseData, setResponseData] = useState({
     slack: null,
     email: null,
@@ -112,15 +113,16 @@ export default function ApplyLeave() {
     }
 
     const data = {
-      name: formData.name.val,
+      name: userName,
       department: formData.department.val,
       fromDate: formData.fromDate.val,
       toDate: formData.toDate.val,
       reason: formData.reason.val,
     };
-
-    console.log(data);
+    console.log(formData.fromDate.val, formData.toDate.val);
+    console.log("Object Data",data);
     setIsApi(true);
+    setIsBtnDisabled(true);
     Notify(
       userName,
       userEmail,
@@ -136,6 +138,7 @@ export default function ApplyLeave() {
         slack: res.slack,
         timely: res.timely,
       });
+      setIsBtnDisabled(false);
       setNotificationStatus({ ...res });
     });
 
@@ -280,8 +283,9 @@ export default function ApplyLeave() {
                   <Button
                     variant="contained"
                     type="submit"
+                    disabled={isBtnDisabled}
                     style={{
-                      backgroundColor: "#192030e0",
+                    backgroundColor: isBtnDisabled ? '' :"#192030e0",
                       width: "15rem",
                       padding: "1rem 0",
                       height: '4rem'

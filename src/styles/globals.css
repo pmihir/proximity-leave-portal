@@ -23,6 +23,7 @@ body {
     background-image: url('../public/Proximity_Cover.png');
     background-repeat: no-repeat;
     background-size: cover;
+    overflow-y: hidden;
   /* background: var(--primary-color); */
 }
 

@@ -10,6 +10,7 @@ export const NotifyEmail = async (
   reasonForLeave
 ) => {
   //call email api
+  console.log(leaveFromDate, leaveToDate);
   const emailToList = GetEmailList(department);
   const data = {
     emailToList,
