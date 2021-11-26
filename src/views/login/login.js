@@ -22,6 +22,7 @@ export default function Login() {
   //   const [googleLoader, setGoogleLoader] = useState(false);
   const [isGoogleCheckmarkActive, setIsGoogleCheckmarkActive] = useState(false);
   const [isTimelyCheckmarkActive, setIsTimelyCheckmarkActive] = useState(false);
+  const [isBtnEnabled, setIsBtnEnabled] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -165,7 +166,11 @@ export default function Login() {
               <Button
                 onClick={onSignIn}
                 className={styles.button}
+                variant="contained"
                 disabled={continueDisabled()}
+                style={{
+                  backgroundColor: continueDisabled() ? '' :"#192030e0",
+                }}
               >
                 <Typography className={styles.buttonName}>Continue</Typography>
               </Button>
