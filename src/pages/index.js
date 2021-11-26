@@ -4,7 +4,11 @@ import { useRouter } from "next/router";
 
 import Login from "../views/login/login";
 
-export default function LoginPage({ session }) {
+export default function LoginPage({
+  session,
+  timelyApplicationId,
+  timelyClientSecret,
+}) {
   const router = useRouter();
   React.useEffect(() => {
     const token = window.localStorage.getItem("timelyToken");
@@ -13,7 +17,13 @@ export default function LoginPage({ session }) {
     }
   }, [session, router]);
 
-  return <Login session={session} />;
+  return (
+    <Login
+      session={session}
+      timelyClientSecret={timelyClientSecret}
+      timelyApplicationId={timelyApplicationId}
+    />
+  );
 }
 
 export const getServerSideProps = async (ctx) => {
@@ -29,6 +39,8 @@ export const getServerSideProps = async (ctx) => {
   return {
     props: {
       session: res,
+      timelyApplicationId: process.env.timelyApplicationId,
+      timelyClientSecret: process.env.timelyClientSecret,
     },
   };
 };

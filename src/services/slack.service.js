@@ -1,6 +1,5 @@
 import axios from "axios";
 
-const webhookUrl = process.env.slack.webhookUrl;
 const formatMessage = (
   leaveFromDate,
   leaveToDate,
@@ -46,7 +45,8 @@ export const NotifySlack = async (
   userName,
   leaveFromDate,
   leaveToDate,
-  reasonForLeave
+  reasonForLeave,
+  slackWebhookUrl
 ) => {
   const message = formatMessage(
     leaveFromDate,
@@ -59,7 +59,7 @@ export const NotifySlack = async (
     username: userName,
     blocks: message,
   };
-  const response = await axios.post(webhookUrl, JSON.stringify(data), {
+  const response = await axios.post(slackWebhookUrl, JSON.stringify(data), {
     withCredentials: false,
     transformRequest: [
       (data, headers) => {

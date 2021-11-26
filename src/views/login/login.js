@@ -17,7 +17,7 @@ import TimelyIcon from "../../public/timely-icon.svg";
 import styles from "./Login.module.css";
 import Checkmark from "../../components/checkmark/checkmark";
 
-export default function Login() {
+export default function Login({ timelyApplicationId, timelyClientSecret }) {
   const [error, setError] = useState("");
   //   const [googleLoader, setGoogleLoader] = useState(false);
   const [isGoogleCheckmarkActive, setIsGoogleCheckmarkActive] = useState(false);
@@ -63,25 +63,25 @@ export default function Login() {
 
   const onGoogleSignIn = async () => {
     await signIn("google", {
-      callbackUrl: process.env.callbackUri,
+      callbackUrl: window.location.origin,
       redirect: false,
     });
   };
 
   const getTimelyAuthCode = () => {
-    const redirectUri = process.env.timely.redirectUri;
-    const applicationId = process.env.timely.applicationId;
+    const redirectUri = window.location.origin;
+    const applicationId = timelyApplicationId;
     const authCodeUrl = `https://api.timelyapp.com/1.1/oauth/authorize?response_type=code&redirect_uri=${redirectUri}&client_id=${applicationId}`;
     //redirecting to timely to get auth code
     location.href = authCodeUrl;
   };
 
   const getAccessToken = async (authCode) => {
-    const { applicationId, clientSecret, redirectUri } = process.env.timely;
+    const redirectUri = window.location.origin;
     const authUrl = "https://api.timelyapp.com/1.1/oauth/token";
     const bodyFormData = new FormData();
-    bodyFormData.append("client_id", applicationId);
-    bodyFormData.append("client_secret", clientSecret);
+    bodyFormData.append("client_id", timelyApplicationId);
+    bodyFormData.append("client_secret", timelyClientSecret);
     bodyFormData.append("redirect_uri", redirectUri);
     bodyFormData.append("code", authCode);
     bodyFormData.append("grant_type", "authorization_code");
@@ -169,7 +169,7 @@ export default function Login() {
                 variant="contained"
                 disabled={continueDisabled()}
                 style={{
-                  backgroundColor: continueDisabled() ? '' :"#192030e0",
+                  backgroundColor: continueDisabled() ? "" : "#192030e0",
                 }}
               >
                 <Typography className={styles.buttonName}>Continue</Typography>
