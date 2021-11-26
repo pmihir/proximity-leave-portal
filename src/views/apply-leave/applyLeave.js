@@ -300,7 +300,7 @@ export default function ApplyLeave({ session }) {
                       height: "4rem",
                     }}
                   >
-                    Send Request
+                    APPLY LEAVE
                   </Button>
                 </div>
                 {isApi && (
