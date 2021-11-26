@@ -44,6 +44,12 @@ export default function Login() {
     });
   }, []);
 
+  // useEffect(() => {
+  //   if (isGoogleCheckmarkActive && window.localStorage.getItem("timelyToken")) {
+  //     router.push("/leave");
+  //   }
+  // }, [isGoogleCheckmarkActive]);
+
   useEffect(() => {
     const urlSearchParams = new URLSearchParams(window.location.search);
     const params = Object.fromEntries(urlSearchParams.entries());
@@ -58,6 +64,7 @@ export default function Login() {
   const onGoogleSignIn = async () => {
     await signIn("google", {
       callbackUrl: process.env.callbackUri,
+      redirect: false,
     });
   };
 

@@ -26,7 +26,7 @@ const formatMessage = (
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `Hi Guys, I will be taking off from ${leaveFromDate.toDateString()} to ${leaveToDate.toDateString()}\nReason: ${reasonForLeave}`,
+        text: `I will be taking off from ${leaveFromDate.toDateString()} to ${leaveToDate.toDateString()}\nReason: ${reasonForLeave}`,
       },
     },
     {

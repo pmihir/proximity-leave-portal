@@ -34,7 +34,7 @@ const DEPARTMENTS = [
   },
 ];
 
-export default function ApplyLeave() {
+export default function ApplyLeave({ session }) {
   const [formData, setFormData] = useState({
     name: {
       val: "",
@@ -58,7 +58,7 @@ export default function ApplyLeave() {
     },
   });
   const [userName, setUserName] = useState("");
-  const router = useRouter();
+  // const router = useRouter();
   const tokenRef = useRef(null);
   const [isApi, setIsApi] = useState(false);
   const [isBtnDisabled, setIsBtnDisabled] = useState(false);
@@ -68,25 +68,34 @@ export default function ApplyLeave() {
     timely: null,
   });
 
-  const sessionRef = useRef();
-
   useEffect(() => {
     tokenRef.current = JSON.parse(window.localStorage.getItem("timelyToken"));
 
-    getSession().then((session) => {
-      if (!session) {
-        router.replace("/");
-      } else {
-        sessionRef.current = session;
-        const user = session.user
-          ? session.user.name
-          : (function () {
-              throw new Error("user not authenticated");
-            })();
-        setUserName(user);
-      }
-    });
+    // getSession().then((session) => {
+    //   if (!session) {
+    //     router.replace("/");
+    //   } else {
+    //     sessionRef.current = session;
+    //     const user = session.user
+    //       ? session.user.name
+    //       : (function () {
+    //           throw new Error("user not authenticated");
+    //         })();
+    //     setUserName(user);
+    //   }
+    // });
   }, []);
+
+  useEffect(() => {
+    if (session) {
+      const user = session.user
+        ? session.user.name
+        : (function () {
+            throw new Error("user not authenticated");
+          })();
+      setUserName(user);
+    }
+  }, [session]);
 
   const [notificationStatus, setNotificationStatus] = useState({
     slack: false,
@@ -95,8 +104,8 @@ export default function ApplyLeave() {
   });
   const submitHandler = (e) => {
     e.preventDefault();
-    const userEmail = sessionRef.current.user.email
-      ? sessionRef.current.user.email
+    const userEmail = session.user.email
+      ? session.user.email
       : (function () {
           throw new Error("user not authenticated");
         })();
@@ -166,7 +175,11 @@ export default function ApplyLeave() {
   };
 
   const onLogout = () => {
-    signOut();
+    signOut({
+      callbackUrl: process.env.callbackUri,
+    }).then(() => {
+      window.localStorage.clear();
+    });
   };
 
   return (
@@ -288,7 +301,7 @@ export default function ApplyLeave() {
                     backgroundColor: isBtnDisabled ? '' :"#192030e0",
                       width: "15rem",
                       padding: "1rem 0",
-                      height: '4rem'
+                      height: "4rem",
                     }}
                   >
                     Send Request
@@ -321,7 +334,7 @@ export default function ApplyLeave() {
                     <div className={styles.progress}>
                       <div className={styles.progressName}>Timely Update </div>
                       <div>
-                      {responseData.timely === null ? (
+                        {responseData.timely === null ? (
                           <CircularProgress
                             style={{ height: "15px", width: "15px" }}
                           />
@@ -335,7 +348,7 @@ export default function ApplyLeave() {
                     <div className={styles.progress}>
                       <div className={styles.progressName}>Email Update</div>
                       <div>
-                      {responseData.email === null ? (
+                        {responseData.email === null ? (
                           <CircularProgress
                             style={{ height: "15px", width: "15px" }}
                           />
