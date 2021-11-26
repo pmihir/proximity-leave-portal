@@ -284,7 +284,7 @@ export default function ApplyLeave() {
                       backgroundColor: "#192030e0",
                       width: "15rem",
                       padding: "1rem 0",
-                      height: '4rem'
+                      height: "4rem",
                     }}
                   >
                     Send Request
@@ -317,7 +317,7 @@ export default function ApplyLeave() {
                     <div className={styles.progress}>
                       <div className={styles.progressName}>Timely Update </div>
                       <div>
-                      {responseData.timely === null ? (
+                        {responseData.timely === null ? (
                           <CircularProgress
                             style={{ height: "15px", width: "15px" }}
                           />
@@ -331,7 +331,7 @@ export default function ApplyLeave() {
                     <div className={styles.progress}>
                       <div className={styles.progressName}>Email Update</div>
                       <div>
-                      {responseData.email === null ? (
+                        {responseData.email === null ? (
                           <CircularProgress
                             style={{ height: "15px", width: "15px" }}
                           />
