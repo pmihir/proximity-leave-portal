@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import Head from "next/head";
-import { signIn, getSession } from "next-auth/client";
+import { signIn, getSession, options } from "next-auth/client";
 import { useRouter } from "next/router";
 import axios from "axios";
 
@@ -16,6 +16,7 @@ import GoogleIcon from "../../public/google-icon.svg";
 import TimelyIcon from "../../public/timely-icon.svg";
 import styles from "./Login.module.css";
 import Checkmark from "../../components/checkmark/checkmark";
+import Cookies from 'universal-cookie';
 
 export default function Login() {
   const [error, setError] = useState("");
@@ -24,6 +25,7 @@ export default function Login() {
   const [isTimelyCheckmarkActive, setIsTimelyCheckmarkActive] = useState(false);
   const [isBtnEnabled, setIsBtnEnabled] = useState(false);
   const router = useRouter();
+  const cookies = new Cookies();
 
   useEffect(() => {
     getSession().then((session) => {
@@ -94,10 +96,12 @@ export default function Login() {
     });
 
     if (response?.data?.access_token) {
-      window.localStorage.setItem(
-        "timelyToken",
-        JSON.stringify(response.data.access_token)
-      );
+      // window.localStorage.setItem(
+      //   "timelyToken",
+      //   JSON.stringify(response.data.access_token)
+      // );
+      console.log(response.data.access_token);
+      cookies.set('timeToken', JSON.stringify(response.data.access_token, null, null));
     }
   };
 

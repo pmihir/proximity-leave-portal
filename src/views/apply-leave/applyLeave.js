@@ -18,6 +18,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import CircularProgress from "@mui/material/CircularProgress";
 import Checkmark from "../../components/checkmark/checkmark";
 import Cross from "../../components/cross/cross";
+import Cookies from "universal-cookie";
 
 const DEPARTMENTS = [
   {
@@ -67,9 +68,12 @@ export default function ApplyLeave({ session }) {
     email: null,
     timely: null,
   });
+  const cookies = new Cookies();
 
   useEffect(() => {
-    tokenRef.current = JSON.parse(window.localStorage.getItem("timelyToken"));
+    // tokenRef.current = JSON.parse(window.localStorage.getItem("timelyToken"));
+    tokenRef.current = cookies.get('timeToken');
+    console.log("Apply Leave", cookies.get('timeToken'));
 
     // getSession().then((session) => {
     //   if (!session) {
@@ -178,7 +182,8 @@ export default function ApplyLeave({ session }) {
     signOut({
       callbackUrl: process.env.callbackUri,
     }).then(() => {
-      window.localStorage.clear();
+      // window.localStorage.clear();
+      cookies.remove('timeToken');
     });
   };
 
