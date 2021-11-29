@@ -1,5 +1,5 @@
 import axios from "axios";
-import userEmails from "../data/userEmails.json";
+// import userEmails from "../data/userEmails.json";
 
 export const NotifyEmail = async (
   department,
