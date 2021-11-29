@@ -65,8 +65,8 @@ export default function Login({ timelyApplicationId, timelyClientSecret }) {
 
   const onGoogleSignIn = async () => {
     await signIn("google", {
-      callbackUrl: window.location.origin,
-      redirect: false,
+      callbackUrl: 'https://proximity-leave-portal-nlt8fqbws-pmihir.vercel.app/',
+      redirect: true,
     });
   };
 
