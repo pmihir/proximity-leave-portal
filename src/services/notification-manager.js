@@ -14,10 +14,10 @@ export const Notify = async (
   leaveToDate,
   department,
   reasonForLeave,
-  timelyBearerToken
+  timelyBearerToken,
+  slackWebhookUrl
 ) => {
-  console.log(timelyBearerToken);
-  const slackChannel = "#" + process.env.slack.channel ?? "testing-slack-post";
+  const slackChannel = "#testing-slack-post";
   const response = { slack: false, timely: false, email: false };
 
   try {
@@ -27,7 +27,8 @@ export const Notify = async (
       userName,
       leaveFromDate,
       leaveToDate,
-      reasonForLeave
+      reasonForLeave,
+      slackWebhookUrl
     );
     response.slack = true;
   } catch (err) {}

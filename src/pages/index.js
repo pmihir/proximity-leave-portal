@@ -4,7 +4,11 @@ import { useRouter } from "next/router";
 import Cookies  from "universal-cookie";
 import Login from "../views/login/login";
 
-export default function LoginPage({ session }) {
+export default function LoginPage({
+  session,
+  timelyApplicationId,
+  timelyClientSecret,
+}) {
   const router = useRouter();
   const cookies = new Cookies();
   React.useEffect(() => {
@@ -13,9 +17,15 @@ export default function LoginPage({ session }) {
     if (token && session) {
       router.push("/leave");
     }
-  }, [session, router]);
+  }, [session, router, cookies]);
 
-  return <Login session={session} />;
+  return (
+    <Login
+      session={session}
+      timelyClientSecret={timelyClientSecret}
+      timelyApplicationId={timelyApplicationId}
+    />
+  );
 }
 
 export const getServerSideProps = async (ctx) => {
@@ -31,6 +41,8 @@ export const getServerSideProps = async (ctx) => {
   return {
     props: {
       session: res,
+      timelyApplicationId: process.env.timelyApplicationId,
+      timelyClientSecret: process.env.timelyClientSecret,
     },
   };
 };
